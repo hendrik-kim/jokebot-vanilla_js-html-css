@@ -12,8 +12,12 @@ const initChatboard = () => {
       chatboardElem.appendChild(span);
       chatboardElem.appendChild(br);
     } else {
-      console.log('Bot in');
-      chatMsgInput.disabled = false;
+      // console.log('Bot in');
+      const span = document.createElement('span');
+      span.innerHTML = `Bot: ${event.detail.message} -> User (${new Date()})`;
+      const br = document.createElement('br');
+      chatboardElem.appendChild(span);
+      chatboardElem.appendChild(br);
     }
   });
 
