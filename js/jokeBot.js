@@ -3,6 +3,8 @@ const BOT_STATE = Object.freeze({
   STAY: 2,
 });
 
+//TODO: get jokes from snapshot
+
 const initJokeBot = (chatboard) => {
   const jokeBotElem = document.createElement('jokeBot');
   jokeBot = {};
@@ -18,7 +20,15 @@ const initJokeBot = (chatboard) => {
         if (hasJoke || (hasTell && hasMe)) {
           console.log(keywwords);
           console.log('Ok, give me a shot!');
+        } else {
+          //TODO: send guidance message
+          helpMessage(chatboard);
         }
+      case BOT_STATE.STAY:
+        break;
+      default:
+        //TODO: send guidance message
+        helpMessage(chatboard);
     }
   };
 
@@ -29,6 +39,10 @@ const initJokeBot = (chatboard) => {
 
   const extractKeyword = (message) => {
     return message.split(' ');
+  };
+
+  const helpMessage = (chatboard) => {
+    chatboard.publish("Sorry, I can't understand you.", 'bot');
   };
 
   jokeBot.getMessage = (message) => {
