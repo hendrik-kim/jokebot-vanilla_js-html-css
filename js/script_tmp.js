@@ -1,14 +1,15 @@
 const init = () => {
   // console.log('Enter chatroom');
 
-  const inputText = document.getElementById('tbx-input');
+  const chatMsgInput = document.getElementById('tbx-input');
   const sendButton = document.getElementById('btn-send');
 
   window.chatboard = initChatboard();
 
   sendButton.addEventListener('click', () => {
-    const message = inputText.value;
+    const message = chatMsgInput.value;
     chatboard.publish(message, 'user');
+    chatMsgInput.value = null;
   });
 };
 
