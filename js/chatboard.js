@@ -9,8 +9,10 @@ const initChatboard = () => {
     //TODO: render in DOM
     if (event.detail.by === 'user') {
       const span = document.createElement('span');
+      const br = document.createElement('br');
       span.innerHTML = `User: ${event.detail.message} -> Bot (${new Date()})`;
       chatboardElem.appendChild(span);
+      chatboardElem.appendChild(br);
     }
   });
 
