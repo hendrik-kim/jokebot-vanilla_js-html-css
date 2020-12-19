@@ -1,9 +1,8 @@
 const BOT_STATE = Object.freeze({
   INIT: 1,
-  STAY: 2,
+  STAY_JOKE: 2,
 });
 
-//TODO: get jokes from firbase
 const getJokes = (callback) => {
   firebase
     .database()
@@ -41,7 +40,7 @@ const initJokeBot = (chatboard) => {
           //TODO: send guidance message
           helpMessage(chatboard);
         }
-      case BOT_STATE.STAY:
+      case BOT_STATE.STAY_JOKE:
         break;
       default:
         //TODO: send guidance message

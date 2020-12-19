@@ -18,6 +18,10 @@ const initChatboard = () => {
       const br = document.createElement('br');
       chatboardElem.appendChild(span);
       chatboardElem.appendChild(br);
+      // FIXME: need to be synchronized
+      setTimeout(() => {
+        chatMsgInput.disabled = false;
+      }, 1000);
     }
   });
 
