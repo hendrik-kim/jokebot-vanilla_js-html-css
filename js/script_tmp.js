@@ -4,19 +4,12 @@ const init = () => {
   const inputText = document.getElementById('tbx-input');
   const sendButton = document.getElementById('btn-send');
 
+  window.chatboard = initChatboard();
+
   sendButton.addEventListener('click', () => {
     const message = inputText.value;
-    sendMessage(message);
-    inputText.value = '';
+    chatboard.publish(message, 'User');
   });
 };
-
-function sendMessage(message) {
-  if (message == '') {
-    alert('input box can not be empty');
-  } else {
-    console.log(message);
-  }
-}
 
 init();
