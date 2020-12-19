@@ -8,7 +8,7 @@ const init = () => {
 
   sendButton.addEventListener('click', () => {
     const message = inputText.value;
-    chatboard.publish(message, 'User');
+    chatboard.publish(message, 'user');
   });
 };
 

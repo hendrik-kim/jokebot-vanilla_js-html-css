@@ -2,9 +2,16 @@ const initChatboard = () => {
   const chatboardElem = document.getElementById('chat-board');
   chatboard = {};
 
-  //TODO: get input text value
-  chatboardElem.addEventListener('publish', (e) => {
-    console.log(e);
+  chatboardElem.addEventListener('publish', (event) => {
+    const chatMsgInput = document.getElementById('tbx-input');
+    // console.log(e);
+
+    //TODO: render in DOM
+    if (event.detail.by === 'user') {
+      const span = document.createElement('span');
+      span.innerHTML = `User: ${event.detail.message} -> Bot (${new Date()})`;
+      chatboardElem.appendChild(span);
+    }
   });
 
   chatboard.publish = (message, by) => {
@@ -19,6 +26,4 @@ const initChatboard = () => {
   };
 
   return chatboard;
-
-  //TODO: render in DOM
 };
