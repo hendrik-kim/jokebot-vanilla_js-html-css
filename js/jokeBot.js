@@ -3,7 +3,16 @@ const BOT_STATE = Object.freeze({
   STAY: 2,
 });
 
-//TODO: get jokes from snapshot
+//TODO: get jokes from firbase
+const getJokes = () => {
+  firebase
+    .database()
+    .ref('jokes')
+    .once('value')
+    .then((snapshot) => {
+      console.log(snapshot);
+    });
+};
 
 const initJokeBot = (chatboard) => {
   const jokeBotElem = document.createElement('jokeBot');
@@ -19,6 +28,7 @@ const initJokeBot = (chatboard) => {
 
         if (hasJoke || (hasTell && hasMe)) {
           console.log(keywwords);
+          getJokes(); // return uncertain object. need to check
           console.log('Ok, give me a shot!');
         } else {
           //TODO: send guidance message
