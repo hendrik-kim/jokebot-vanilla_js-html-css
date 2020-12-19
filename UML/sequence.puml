@@ -1,0 +1,52 @@
+@startuml
+actor User
+actor Bot
+
+[-> User : user start app
+
+Bot <- User : Ask JokeBot "Hey Bot, tell me a joke."
+ref over Bot
+    Check if there is a joke in DB and if not, ask the user to joke.
+    1. If bot memories joke, shot joke.
+    2. Else, ask User's joke.
+end ref
+
+alt has joke
+    User -> Bot : Ask joke.
+    Bot -> User : Start joke.
+    ref over Bot
+    1. Parse the message sent by the User and extract keywords.
+    Keyword: Knock, Knock
+    end ref
+    alt 2.1. if keyword is catched
+        Bot -> User : 3.1 Forward one of stored messages
+    else 2.2. if Keyword is not catched
+        Bot -> User : 3.2 Forawerd guide message ("Please tell me Knock Knock")
+    end
+end
+
+alt has no joke
+    User -> Bot : Ask joke.
+    Bot -> User : Tell user there's no joke.
+    ref over Bot
+    1. Parse the message sent by the User and extract keywords.
+    Keyword: Joke, Tell me
+    end ref
+    alt 2.1. if keyword is catched
+        Bot -> User : 3.1 Ask User's joke
+    else 2.2. if Keyword is not catched
+        Bot -> User : 3.2 Forawerd guide message ("I didn't understand. Please tell me another way.")
+    end
+end
+
+Loop until the keyword is caught
+    User -> Bot : Shot joke
+    ref over Bot
+        1. Check end keyword
+        Keyword: your, joke
+        2. Randomly extracts the stored joke and delivers it to the user
+    end
+end
+Bot -> User : Before joke
+
+@enduml
