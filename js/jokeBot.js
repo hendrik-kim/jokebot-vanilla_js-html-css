@@ -3,14 +3,33 @@ const BOT_STATE = Object.freeze({
   STAY: 2,
 });
 
-const initJokeBot = () => {
+const initJokeBot = (chatboard) => {
   const jokeBotElem = document.createElement('jokeBot');
   jokeBot = {};
   jokeBot.state = BOT_STATE.INIT;
 
+  jokeBot.stateTransit = (keywwords = []) => {
+    switch (jokeBot.state) {
+      case BOT_STATE.INIT:
+        const hasJoke = keywwords.includes('joke');
+        const hasTell = keywwords.includes('tell');
+        const hasMe = keywwords.includes('me');
+
+        if (hasJoke || (hasTell && hasMe)) {
+          console.log(keywwords);
+          console.log('Ok, give me a shot!');
+        }
+    }
+  };
+
   jokeBotElem.addEventListener('message', (event) => {
-    console.log(event);
+    const keywwords = extractKeyword(event.detail.message);
+    jokeBot.stateTransit(keywwords);
   });
+
+  const extractKeyword = (message) => {
+    return message.split(' ');
+  };
 
   jokeBot.getMessage = (message) => {
     jokeBotElem.dispatchEvent(

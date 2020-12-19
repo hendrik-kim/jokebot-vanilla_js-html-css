@@ -5,12 +5,12 @@ const init = () => {
   const sendButton = document.getElementById('btn-send');
 
   window.chatboard = initChatboard();
-  window.jokeBot = initJokeBot();
+  window.jokeBot = initJokeBot(chatboard);
 
   sendButton.addEventListener('click', () => {
     const message = chatMsgInput.value;
     chatboard.publish(message, 'user');
-    jokeBot.getMessage(chatMsgInput.value);
+    jokeBot.getMessage(message);
     chatMsgInput.value = null;
   });
 };
