@@ -10,6 +10,7 @@ const init = () => {
   sendButton.addEventListener('click', () => {
     const message = chatMsgInput.value;
     chatboard.publish(message, 'user');
+    jokeBot.getMessage(chatMsgInput.value);
     chatMsgInput.value = null;
   });
 };
