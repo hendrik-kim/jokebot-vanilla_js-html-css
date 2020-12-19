@@ -11,6 +11,9 @@ const initChatboard = () => {
       span.innerHTML = `User: ${event.detail.message} -> Bot (${new Date()})`;
       chatboardElem.appendChild(span);
       chatboardElem.appendChild(br);
+    } else {
+      console.log('Bot in');
+      chatMsgInput.disabled = false;
     }
   });
 
