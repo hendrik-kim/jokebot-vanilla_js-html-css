@@ -4,9 +4,7 @@ const initChatboard = () => {
 
   chatboardElem.addEventListener('publish', (event) => {
     const chatMsgInput = document.getElementById('tbx-input');
-    // console.log(e);
 
-    //TODO: render in DOM
     if (event.detail.by === 'user') {
       const span = document.createElement('span');
       const br = document.createElement('br');
