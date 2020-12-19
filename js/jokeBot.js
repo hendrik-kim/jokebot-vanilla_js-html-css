@@ -4,13 +4,13 @@ const BOT_STATE = Object.freeze({
 });
 
 //TODO: get jokes from firbase
-const getJokes = () => {
+const getJokes = (callback) => {
   firebase
     .database()
     .ref('jokes')
     .once('value')
     .then((snapshot) => {
-      console.log(snapshot);
+      callback(snapshot.val());
     });
 };
 
@@ -23,13 +23,20 @@ const initJokeBot = (chatboard) => {
     switch (jokeBot.state) {
       case BOT_STATE.INIT:
         const hasJoke = keywwords.includes('joke');
+        const hasKnow = keywwords.includes('know');
         const hasTell = keywwords.includes('tell');
         const hasMe = keywwords.includes('me');
 
-        if (hasJoke || (hasTell && hasMe)) {
-          console.log(keywwords);
-          getJokes(); // return uncertain object. need to check
-          console.log('Ok, give me a shot!');
+        if (hasJoke || hasKnow || (hasTell && hasMe)) {
+          getJokes((jokes) => {
+            if (jokes) {
+            } else {
+              chatboard.publish(
+                'I don’t know any jokes yet, but I would love to learn one from you, can you tell me a Knock knock joke?',
+                'bot'
+              );
+            }
+          });
         } else {
           //TODO: send guidance message
           helpMessage(chatboard);
