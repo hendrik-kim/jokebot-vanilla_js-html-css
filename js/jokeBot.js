@@ -30,13 +30,18 @@ const initJokeBot = (chatboard) => {
   jokeBot.state = BOT_STATE.INIT;
   jokebot.joke = new Joke();
 
-  jokeBot.stateTransit = (keywwords = []) => {
+  /* keyword -> message change
+   Bot need to get whole message from user not keyword.
+   prevent to lose user's message
+   decoupling from extractKeyword*/
+  jokeBot.stateTransit = (message) => {
+    const keywords = extractKeyword(message);
     switch (jokeBot.state) {
       case BOT_STATE.INIT:
-        const hasJoke = keywwords.includes('joke');
-        const hasKnow = keywwords.includes('know');
-        const hasTell = keywwords.includes('tell');
-        const hasMe = keywwords.includes('me');
+        const hasJoke = keywords.includes('joke');
+        const hasKnow = keywords.includes('know');
+        const hasTell = keywords.includes('tell');
+        const hasMe = keywords.includes('me');
 
         if (hasJoke || hasKnow || (hasTell && hasMe)) {
           getJokes((jokes) => {
@@ -65,9 +70,8 @@ const initJokeBot = (chatboard) => {
         }
         break;
       case BOT_STATE.STAY_USER_ANSWER:
-        const userAnswer = keywwords(' ');
-        jokebot.joke.userAnswer = userAnswer;
-        chatboard.publish(`${userAnswer} who?`);
+        jokebot.joke.userAnswer = message;
+        chatboard.publish(`${message} who?`);
         jokebot.state = BOT_STATE.STAY_USER_KICK;
         break;
       case BOT_STATE.STAY_USER_KICK:
@@ -80,9 +84,8 @@ const initJokeBot = (chatboard) => {
     }
   };
 
-  jokeBotElem.addEventListener('message', (event) => {
-    const keywwords = extractKeyword(event.detail.message);
-    jokeBot.stateTransit(keywwords);
+  jokeBotElem.addEventListener('message', (evt) => {
+    jokeBot.stateTransit(evt.detail.message);
   });
 
   const extractKeyword = (message) => {
