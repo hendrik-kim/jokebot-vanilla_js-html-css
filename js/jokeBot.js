@@ -6,6 +6,7 @@ const BOT_STATE = Object.freeze({
   STAY_BOT_TURN: 5,
   STAY_USER_WHO: 6,
   STAY_BOT_WAIT_USER_WHO: 7,
+  STAY_USER_ASK_ANOTHER_JOKE: 8,
 });
 
 const appendJoke = (joke, callback) => {
@@ -26,11 +27,21 @@ const appendJoke = (joke, callback) => {
   });
 };
 
+const getJokes = (callback) => {
+  firebase
+    .database()
+    .ref('jokes')
+    .once('value')
+    .then((snapshot) => {
+      callback(snapshot.val());
+    });
+};
+
 class Joke {
-  constructor(userAnswer, userKick, userLike) {
+  constructor(userAnswer, userKick) {
     this.userAnswer = userAnswer;
     this.userKick = userKick;
-    this.userLike = userLike;
+    // this.userLike = userLike;
   }
 }
 
@@ -46,25 +57,31 @@ const initjokeBot = (chatboard) => {
    decoupling from extractKeyword*/
   jokeBot.stateTransit = (message) => {
     const keywords = extractKeyword(message);
+    const hasJoke = keywords.includes('joke');
+    const hasKnow = keywords.includes('know');
+    const hasTell = keywords.includes('tell');
+    const hasMe = keywords.includes('me');
+    const hasKnock = keywords.includes('knock');
+    const hasYour = keywords.includes('your');
+    const hasTurn = keywords.includes('turn');
+    const hasWant = keywords.includes('want');
+    const hasHear = keywords.includes('hear');
+    const hasWho = keywords.includes('who');
+    const hasThere = keywords.includes('there');
+    const hasOk = keywords.includes('ok');
+    const hasYes = keywords.includes('yes');
+    const hasNo = keywords.includes('no');
+
     switch (jokeBot.state) {
       case BOT_STATE.INIT:
-        const hasJoke = keywords.includes('joke');
-        const hasKnow = keywords.includes('know');
-        const hasTell = keywords.includes('tell');
-        const hasMe = keywords.includes('me');
-        const hasKnock = keywords.includes('knock');
-        const hasYour = keywords.includes('your');
-        const hasTurn = keywords.includes('turn');
-        const hasWant = keywords.includes('want');
-        const hasHear = keywords.includes('hear');
-        const hasOk = keywords.includes('ok');
-
         if (hasJoke || hasKnow || (hasTell && hasMe)) {
           getJokes((jokes) => {
             if (jokes) {
               // if jokes is exist, tell random joke to user
-              const joke = jokes[Math.floor(Math.random() * jokes.length)];
-              jokeBot.publish(joke, bot);
+              jokeBot.joke = jokes[Math.floor(Math.random() * jokes.length)];
+              chatboard.publish('Ok. I have a funny joke for you.', 'bot');
+              chatboard.publish('Knock, knock!', 'bot');
+              jokeBot.state = BOT_STATE.STAY_USER_WHO;
             } else {
               chatboard.publish(
                 'I don’t know any jokes yet, but I would love to learn one from you, can you tell me a Knock knock joke?',
@@ -93,8 +110,15 @@ const initjokeBot = (chatboard) => {
         break;
       case BOT_STATE.STAY_USER_KICK:
         jokeBot.joke.userKick = message;
-        chatboard.publish(`Ha Ha, that's good one.`, 'bot');
-        jokeBot.state = BOT_STATE.STAY_BOT_TURN;
+        appendJoke(jokeBot.joke, (jokes) => {
+          console.log(jokeBot.joke);
+          const joke = jokes[Math.floor(Math.random() * jokes.length)];
+          jokeBot.joke = joke;
+          chatboard.publish(`Ha Ha, that's good one.`, 'bot');
+          chatboard.publish(`Now I know new joke`, 'bot');
+          chatboard.publish(`Let's talk about more jokes ;)`, 'bot');
+          jokeBot.state = BOT_STATE.INIT;
+        });
         break;
       case BOT_STATE.STAY_BOT_TURN:
         if (hasYour || hasTurn || hasWant || hasHear || hasJoke || hasOk) {
@@ -121,6 +145,30 @@ const initjokeBot = (chatboard) => {
         if (hasWho || hasThere) {
           chatboard.publish(jokeBot.joke.userAnswer, 'bot');
           jokeBot.state = BOT_STATE.STAY_BOT_WAIT_USER_WHO;
+        } else {
+          helpMessage(chatboard);
+        }
+        break;
+      case BOT_STATE.STAY_BOT_WAIT_USER_WHO:
+        if (hasWho) {
+          chatboard.publish(jokeBot.joke.userKick, 'bot');
+          chatboard.publish('How was it? Do you like it?', 'bot');
+          jokeBot.state = BOT_STATE.STAY_USER_ASK_ANOTHER_JOKE;
+        } else {
+          helpMessage(chatboard);
+        }
+        break;
+      case BOT_STATE.STAY_USER_ASK_ANOTHER_JOKE:
+        if (hasYes) {
+          // TODO: add function to add like bot's joke
+          chatboard.publish('Ok, Let me tell you again. Knock, knock!', 'bot');
+          jokeBot.state = BOT_STATE.STAY_USER_WHO;
+        } else if (hasNo) {
+          chatboard.publish(
+            'No problem. Ask me anytime to tell you my jokes ;)',
+            'bot'
+          );
+          jokeBot.state = BOT_STATE.INIT;
         } else {
           helpMessage(chatboard);
         }
