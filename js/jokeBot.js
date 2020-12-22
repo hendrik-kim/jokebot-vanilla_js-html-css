@@ -67,6 +67,7 @@ const initjokeBot = (chatboard) => {
     const hasWant = keywords.includes('want');
     const hasHear = keywords.includes('hear');
     const hasWho = keywords.includes('who');
+    const hasAskWho = keywords.includes('who?');
     const hasThere = keywords.includes('there');
     const hasOk = keywords.includes('ok');
     const hasYes = keywords.includes('yes');
@@ -150,7 +151,7 @@ const initjokeBot = (chatboard) => {
         }
         break;
       case BOT_STATE.STAY_BOT_WAIT_USER_WHO:
-        if (hasWho) {
+        if (hasWho || hasAskWho) {
           chatboard.publish(jokeBot.joke.userKick, 'bot');
           chatboard.publish('How was it? Do you like it?', 'bot');
           jokeBot.state = BOT_STATE.STAY_USER_ASK_ANOTHER_JOKE;
