@@ -10,7 +10,7 @@ const BOT_STATE = Object.freeze({
 });
 
 const extractKeyword = (message) => {
-  return message.replace(/[,.?]/gi, '').split(' ');
+  return message.replace(/[,.?]/gi, '').toLowerCase().split(' ');
 };
 
 const helpMessage = (chatboard) => {
@@ -92,14 +92,25 @@ const initjokeBot = (chatboard) => {
               console.log(jokes);
               jokeBot.joke = jokes[Math.floor(Math.random() * jokes.length)];
               console.log(jokeBot.joke);
-              chatboard.publish('Ok. I have a funny joke for you.', 'bot');
-              chatboard.publish('Knock, knock!', 'bot');
+              chatboard.publish('Ok. I have a funny joke for you :)', 'bot');
+              setTimeout(() => {
+                chatboard.publish('Let me start.', 'bot');
+              }, 1500);
+              setTimeout(() => {
+                chatboard.publish('Knock, knock!', 'bot');
+              }, 3000);
               jokeBot.state = BOT_STATE.STAY_BOT_WAIT_USER_WHO;
             } else {
-              chatboard.publish(
-                'I don’t know any jokes yet, but I would love to learn one from you, can you tell me a Knock knock joke?',
-                'bot'
-              );
+              chatboard.publish('I don’t know any jokes yet', 'bot');
+              setTimeout(() => {
+                chatboard.publish(
+                  'But I would love to learn one from you :)',
+                  'bot'
+                );
+              }, 1500);
+              setTimeout(() => {
+                chatboard.publish('Can you tell me a knock knock joke?', 'bot');
+              }, 3000);
               jokeBot.state = BOT_STATE.STAY_BOT_ASK_USER_JOKE;
             }
           });
@@ -119,8 +130,12 @@ const initjokeBot = (chatboard) => {
       case BOT_STATE.STAY_BOT_WAIT_USER_WHO_AGAIN:
         if (hasWho) {
           chatboard.publish(jokeBot.joke.userKick, 'bot');
-          chatboard.publish("Lol Isn't it funny?", 'bot');
-          chatboard.publish('Do you like it?', 'bot');
+          setTimeout(() => {
+            chatboard.publish("Lol Isn't it funny?", 'bot');
+          }, 2000);
+          setTimeout(() => {
+            chatboard.publish('Do you like it?', 'bot');
+          }, 4000);
           jokeBot.state = BOT_STATE.STAY_BOT_TELL_ANOTHER_JOKE;
         } else {
           helpMessage(chatboard);
@@ -131,10 +146,10 @@ const initjokeBot = (chatboard) => {
           getJokes((jokes) => {
             jokeBot.joke = jokes[Math.floor(Math.random() * jokes.length)];
             console.log(jokeBot.joke);
-            chatboard.publish(
-              'Ok, Let me tell you another one. Knock, knock!',
-              'bot'
-            );
+            chatboard.publish('Ok, Let me tell you another one.', 'bot');
+            setTimeout(() => {
+              chatboard.publish('Knock, knock', 'bot');
+            }, 1500);
             jokeBot.state = BOT_STATE.STAY_BOT_WAIT_USER_WHO;
           });
         } else if (hasNo) {
@@ -166,8 +181,12 @@ const initjokeBot = (chatboard) => {
         jokeBot.joke.userKick = message;
         console.log(jokeBot.joke.userKick);
         chatboard.publish('Ha Ha, that’s a good one.', 'bot');
-        chatboard.publish('Can I memorize that joke?', 'bot');
-        chatboard.publish('I want to use it later.', 'bot');
+        setTimeout(() => {
+          chatboard.publish('Can I use that joke?', 'bot');
+        }, 1500);
+        setTimeout(() => {
+          chatboard.publish('I want to use it later.', 'bot');
+        }, 3000);
 
         jokeBot.state = BOT_STATE.STAY_USER_ALLOWS_MOMERIZE;
         break;
@@ -177,7 +196,9 @@ const initjokeBot = (chatboard) => {
             console.log(jokeBot.joke);
 
             chatboard.publish('Thank you ;)', 'bot');
-            chatboard.publish("Let's talk about more jokes", 'bot');
+            setTimeout(() => {
+              chatboard.publish("Let's talk about more jokes", 'bot');
+            }, 1500);
 
             jokeBot.state = BOT_STATE.INIT;
           });

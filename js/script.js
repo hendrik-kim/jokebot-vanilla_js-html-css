@@ -7,17 +7,19 @@ const init = () => {
 
   sendChat = () => {
     const message = msgInputElem.value;
-    chatboard.publish(message, 'user');
-    jokeBot.getMessage(message);
-    msgInputElem.value = null;
+    if (message) {
+      chatboard.publish(message, 'user');
+      jokeBot.getMessage(message);
+      msgInputElem.value = null;
+    }
   };
 
   sendBtnElem.addEventListener('click', () => {
     sendChat();
   });
 
-  msgInputElem.addEventListener('keyup', function (evt) {
-    if (evt.keyCode === 13) {
+  msgInputElem.addEventListener('keypress', function (evt) {
+    if (evt.key === 'Enter') {
       evt.preventDefault();
       sendChat();
     }
