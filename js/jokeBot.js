@@ -15,6 +15,13 @@ const getJokes = (callback) => {
       callback(snapshot.val());
     });
 };
+class Joke {
+  constructor(userAnswer, userKick, userLike) {
+    this.userAnswer = userAnswer;
+    this.userKick = userKick;
+    this.userLike = userLike;
+  }
+}
 
 const initJokeBot = (chatboard) => {
   const jokeBotElem = document.createElement('jokeBot');
