@@ -46,10 +46,10 @@ const getJokes = (callback) => {
 };
 
 class Joke {
-  constructor(userAnswer, userKick) {
+  constructor(userAnswer, userKick, userLike = 0) {
     this.userAnswer = userAnswer;
     this.userKick = userKick;
-    // this.userLike = userLike;
+    this.userLike = userLike;
   }
 }
 

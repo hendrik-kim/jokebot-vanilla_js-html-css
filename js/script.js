@@ -1,14 +1,20 @@
 const init = () => {
   const msgInputElem = document.getElementById('tbx-input');
-  const sendBtnElem = document.getElementById('btn-send');
-  const likeBtnElem = document.getElementById('btn-like');
+  const sendChatBtnElem = document.getElementById('btn-send');
+  const sendLikeBtnElem = document.getElementById('btn-like');
 
   window.chatboard = initChatboard();
   window.jokeBot = initjokeBot(chatboard);
 
-  likeBtnElem.addEventListener('click', (evt) => {
-    console.log('like');
+  sendLikeBtnElem.addEventListener('click', (evt) => {
+    sendLike();
   });
+
+  sendLike = () => {
+    const joke = jokeBot.joke;
+    joke.userLike += 1;
+    console.log(joke);
+  };
 
   sendChat = () => {
     const message = msgInputElem.value;
@@ -19,7 +25,7 @@ const init = () => {
     }
   };
 
-  sendBtnElem.addEventListener('click', () => {
+  sendChatBtnElem.addEventListener('click', () => {
     sendChat();
   });
 
