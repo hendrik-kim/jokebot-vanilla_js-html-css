@@ -104,31 +104,6 @@ const initjokeBot = (chatboard) => {
           helpMessage(chatboard);
         }
         break;
-      case BOT_STATE.STAY_BOT_USER_KNOCK:
-        if (hasKnock) {
-          chatboard.publish("Who's there?", 'bot');
-          jokeBot.state = BOT_STATE.STAY_USER_ANSWER;
-        } else {
-          helpMessage(chatboard);
-        }
-        break;
-      case BOT_STATE.STAY_USER_ANSWER:
-        jokeBot.joke.userAnswer = message;
-        chatboard.publish(`${message} who?`, 'bot');
-        jokeBot.state = BOT_STATE.STAY_USER_KICK;
-        break;
-      case BOT_STATE.STAY_USER_KICK:
-        jokeBot.joke.userKick = message;
-        appendJoke(jokeBot.joke, (jokes) => {
-          console.log(jokeBot.joke);
-          const joke = jokes[Math.floor(Math.random() * jokes.length)];
-          jokeBot.joke = joke;
-          chatboard.publish(`Ha Ha, that's good one.`, 'bot');
-          chatboard.publish(`Now I know new joke`, 'bot');
-          chatboard.publish(`Let's talk about more jokes ;)`, 'bot');
-          jokeBot.state = BOT_STATE.INIT;
-        });
-        break;
       case BOT_STATE.STAY_USER_WHO:
         if (hasWho || hasThere) {
           chatboard.publish(jokeBot.joke.userAnswer, 'bot');
@@ -190,7 +165,6 @@ const initjokeBot = (chatboard) => {
           chatboard.publish("Who's there?", 'bot');
           jokeBot.state = BOT_STATE.STAY_USER_KICK1;
         } else {
-          // TODO: 사용방법 전달
           helpMessage(chatboard);
         }
         break;
