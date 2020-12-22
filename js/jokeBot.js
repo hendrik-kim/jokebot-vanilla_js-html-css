@@ -67,7 +67,7 @@ const initJokeBot = (chatboard) => {
   });
 
   const extractKeyword = (message) => {
-    return message.split(' ');
+    return message.replace(/[,.]/gi, '').split(' ');
   };
 
   const helpMessage = (chatboard) => {
