@@ -3,7 +3,6 @@ const initChatboard = () => {
   chatboard = {};
 
   chatboardElem.addEventListener('publish', (evt) => {
-    const chatMsgInput = document.getElementById('tbx-input');
     const date = new Date();
 
     if (evt.detail.by === 'user') {
@@ -15,17 +14,19 @@ const initChatboard = () => {
       chatboardElem.appendChild(span);
       chatboardElem.appendChild(br);
     } else {
-      // console.log('Bot in');
-      const span = document.createElement('span');
-      const br = document.createElement('br');
-      span.innerHTML = `Bot: ${
-        evt.detail.message
-      } <label class="lbl-bot-datetime">${date.toLocaleTimeString(
-        'en-US'
-      )}</label>`;
-      chatboardElem.appendChild(span);
-      chatboardElem.appendChild(br);
-      // FIXME: need to be synchronized
+      setTimeout(() => {
+        // console.log('Bot in');
+        const span = document.createElement('span');
+        const br = document.createElement('br');
+        span.innerHTML = `Bot: ${
+          evt.detail.message
+        } <label class="lbl-bot-datetime">${date.toLocaleTimeString(
+          'en-US'
+        )}</label>`;
+        chatboardElem.appendChild(span);
+        chatboardElem.appendChild(br);
+        // FIXME: need to be synchronized
+      }, 1000);
     }
   });
 

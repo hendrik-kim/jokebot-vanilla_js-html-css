@@ -4,8 +4,8 @@ const BOT_STATE = Object.freeze({
   STAY_BOT_WAIT_USER_WHO_AGAIN: 3,
   STAY_BOT_TELL_ANOTHER_JOKE: 4,
   STAY_BOT_ASK_USER_JOKE: 5,
-  STAY_USER_JOKE_LINE_1: 6,
-  STAY_USER_JOKE_LINE_2: 7,
+  STAY_USER_JOKE_FIRST: 6,
+  STAY_USER_JOKE_SECOND: 7,
   STAY_USER_ALLOWS_MOMERIZE: 8,
 });
 
@@ -151,18 +151,18 @@ const initjokeBot = (chatboard) => {
         console.log('bot: knock knock');
         if (hasKnock) {
           chatboard.publish("Who's there?", 'bot');
-          jokeBot.state = BOT_STATE.STAY_USER_JOKE_LINE_1;
+          jokeBot.state = BOT_STATE.STAY_USER_JOKE_FIRST;
         } else {
           helpMessage(chatboard);
         }
         break;
-      case BOT_STATE.STAY_USER_JOKE_LINE_1:
+      case BOT_STATE.STAY_USER_JOKE_FIRST:
         jokeBot.joke.userAnswer = message;
         console.log(jokeBot.joke.userAnswer);
         chatboard.publish(`${message} who?`, 'bot');
-        jokeBot.state = BOT_STATE.STAY_USER_JOKE_LINE_2;
+        jokeBot.state = BOT_STATE.STAY_USER_JOKE_SECOND;
         break;
-      case BOT_STATE.STAY_USER_JOKE_LINE_2:
+      case BOT_STATE.STAY_USER_JOKE_SECOND:
         jokeBot.joke.userKick = message;
         console.log(jokeBot.joke.userKick);
         chatboard.publish('Ha Ha, that’s a good one.', 'bot');
@@ -189,7 +189,6 @@ const initjokeBot = (chatboard) => {
         }
         break;
       default:
-        //TODO: send guidance message
         helpMessage(chatboard);
     }
   };
