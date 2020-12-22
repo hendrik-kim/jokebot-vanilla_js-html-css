@@ -1,6 +1,9 @@
 const BOT_STATE = Object.freeze({
   INIT: 1,
-  STAY_JOKE: 2,
+  STAY_KNOCK_KNOCK: 2,
+  STAY_USER_ANSWER: 3,
+  STAY_USER_KICK: 4,
+  STAY_BOT_TURN: 5,
 });
 
 const getJokes = (callback) => {
@@ -37,14 +40,14 @@ const initJokeBot = (chatboard) => {
                 'I don’t know any jokes yet, but I would love to learn one from you, can you tell me a Knock knock joke?',
                 'bot'
               );
-              chatbot.state = BOT_STATE.STAY_JOKE;
+              chatbot.state = BOT_STATE.STAY_KNOCK_KNOCK;
             }
           });
         } else {
           //TODO: send guidance message
           helpMessage(chatboard);
         }
-      case BOT_STATE.STAY_JOKE:
+      case BOT_STATE.STAY_KNOCK_KNOCK:
         break;
       default:
         //TODO: send guidance message
