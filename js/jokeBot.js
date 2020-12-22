@@ -1,17 +1,21 @@
 const BOT_STATE = Object.freeze({
   INIT: 1,
-  STAY_BOT_USER_KNOCK: 2,
-  STAY_USER_ANSWER: 3,
-  STAY_USER_KICK: 4,
-  STAY_USER_ALLOWS_MOMERIZE: 5,
-  STAY_USER_WHO: 6,
-  STAY_BOT_WAIT_USER_WHO: 7,
-  STAY_BOT_WAIT_USER_INPUT: 8,
-  STAY_USER_ASK_ANOTHER_JOKE: 9,
-  STAY_USER_KICK1: 10,
-  STAY_USER_KICK2: 11,
-  STAY_USER_TELL_JOKE: 12,
+  STAY_BOT_WAIT_USER_WHO: 2,
+  STAY_BOT_WAIT_USER_WHO_AGAIN: 3,
+  STAY_BOT_TELL_ANOTHER_JOKE: 4,
+  STAY_BOT_ASK_USER_JOKE: 5,
+  STAY_USER_JOKE_LINE_1: 6,
+  STAY_USER_JOKE_LINE_2: 7,
+  STAY_USER_ALLOWS_MOMERIZE: 8,
 });
+
+const extractKeyword = (message) => {
+  return message.replace(/[,.?]/gi, '').split(' ');
+};
+
+const helpMessage = (chatboard) => {
+  chatboard.publish("Sorry, I can't understand you.", 'bot');
+};
 
 const appendJoke = (joke, callback) => {
   getJokes((jokes) => {
@@ -80,7 +84,7 @@ const initjokeBot = (chatboard) => {
       case BOT_STATE.INIT:
         if (hasWant && hasMy && hasJoke) {
           chatboard.publish('Ok, tell me your joke', 'bot');
-          jokeBot.state = BOT_STATE.STAY_USER_TELL_JOKE;
+          jokeBot.state = BOT_STATE.STAY_BOT_ASK_USER_JOKE;
         } else if (hasJoke || hasKnow || (hasTell && hasMe)) {
           getJokes((jokes) => {
             if (jokes) {
@@ -90,13 +94,13 @@ const initjokeBot = (chatboard) => {
               console.log(jokeBot.joke);
               chatboard.publish('Ok. I have a funny joke for you.', 'bot');
               chatboard.publish('Knock, knock!', 'bot');
-              jokeBot.state = BOT_STATE.STAY_USER_WHO;
+              jokeBot.state = BOT_STATE.STAY_BOT_WAIT_USER_WHO;
             } else {
               chatboard.publish(
                 'I don’t know any jokes yet, but I would love to learn one from you, can you tell me a Knock knock joke?',
                 'bot'
               );
-              jokeBot.state = BOT_STATE.STAY_USER_TELL_JOKE;
+              jokeBot.state = BOT_STATE.STAY_BOT_ASK_USER_JOKE;
             }
           });
         } else {
@@ -104,41 +108,25 @@ const initjokeBot = (chatboard) => {
           helpMessage(chatboard);
         }
         break;
-      case BOT_STATE.STAY_USER_WHO:
+      case BOT_STATE.STAY_BOT_WAIT_USER_WHO:
         if (hasWho || hasThere) {
           chatboard.publish(jokeBot.joke.userAnswer, 'bot');
-          jokeBot.state = BOT_STATE.STAY_BOT_WAIT_USER_WHO;
+          jokeBot.state = BOT_STATE.STAY_BOT_WAIT_USER_WHO_AGAIN;
         } else {
           helpMessage(chatboard);
         }
         break;
-      case BOT_STATE.STAY_BOT_WAIT_USER_WHO:
+      case BOT_STATE.STAY_BOT_WAIT_USER_WHO_AGAIN:
         if (hasWho) {
           chatboard.publish(jokeBot.joke.userKick, 'bot');
           chatboard.publish("Lol Isn't it funny?", 'bot');
           chatboard.publish('Do you like it?', 'bot');
-          jokeBot.state = BOT_STATE.STAY_USER_ASK_ANOTHER_JOKE;
+          jokeBot.state = BOT_STATE.STAY_BOT_TELL_ANOTHER_JOKE;
         } else {
           helpMessage(chatboard);
         }
         break;
-      case BOT_STATE.STAY_BOT_WAIT_USER_INPUT:
-        if (hasLike || hasLove) {
-          // TODO: add function to add like bot's joke
-          chatboard.publish('Thank you.', 'bot');
-          chatboard.publish('Do you want another joke? Then ask me.', 'bot');
-          jokeBot.state = BOT_STATE.STAY_USER_ASK_ANOTHER_JOKE;
-        } else if (hasNo) {
-          chatboard.publish(
-            'Ah... Ok :( Then please me tell you a joke another time.',
-            'bot'
-          );
-          jokeBot.state = BOT_STATE.INIT;
-        } else {
-          helpMessage(chatboard);
-        }
-        break;
-      case BOT_STATE.STAY_USER_ASK_ANOTHER_JOKE:
+      case BOT_STATE.STAY_BOT_TELL_ANOTHER_JOKE:
         if (hasYes) {
           getJokes((jokes) => {
             jokeBot.joke = jokes[Math.floor(Math.random() * jokes.length)];
@@ -147,7 +135,7 @@ const initjokeBot = (chatboard) => {
               'Ok, Let me tell you another one. Knock, knock!',
               'bot'
             );
-            jokeBot.state = BOT_STATE.STAY_USER_WHO;
+            jokeBot.state = BOT_STATE.STAY_BOT_WAIT_USER_WHO;
           });
         } else if (hasNo) {
           chatboard.publish(
@@ -159,22 +147,22 @@ const initjokeBot = (chatboard) => {
           helpMessage(chatboard);
         }
         break;
-      case BOT_STATE.STAY_USER_TELL_JOKE:
+      case BOT_STATE.STAY_BOT_ASK_USER_JOKE:
         console.log('bot: knock knock');
         if (hasKnock) {
           chatboard.publish("Who's there?", 'bot');
-          jokeBot.state = BOT_STATE.STAY_USER_KICK1;
+          jokeBot.state = BOT_STATE.STAY_USER_JOKE_LINE_1;
         } else {
           helpMessage(chatboard);
         }
         break;
-      case BOT_STATE.STAY_USER_KICK1:
+      case BOT_STATE.STAY_USER_JOKE_LINE_1:
         jokeBot.joke.userAnswer = message;
         console.log(jokeBot.joke.userAnswer);
         chatboard.publish(`${message} who?`, 'bot');
-        jokeBot.state = BOT_STATE.STAY_USER_KICK2;
+        jokeBot.state = BOT_STATE.STAY_USER_JOKE_LINE_2;
         break;
-      case BOT_STATE.STAY_USER_KICK2:
+      case BOT_STATE.STAY_USER_JOKE_LINE_2:
         jokeBot.joke.userKick = message;
         console.log(jokeBot.joke.userKick);
         chatboard.publish('Ha Ha, that’s a good one.', 'bot');
@@ -209,14 +197,6 @@ const initjokeBot = (chatboard) => {
   jokeBotElem.addEventListener('message', (evt) => {
     jokeBot.stateTransit(evt.detail.message);
   });
-
-  const extractKeyword = (message) => {
-    return message.replace(/[,.?]/gi, '').split(' ');
-  };
-
-  const helpMessage = (chatboard) => {
-    chatboard.publish("Sorry, I can't understand you.", 'bot');
-  };
 
   jokeBot.getMessage = (message) => {
     jokeBotElem.dispatchEvent(
