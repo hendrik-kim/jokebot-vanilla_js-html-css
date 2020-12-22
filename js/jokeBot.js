@@ -49,6 +49,12 @@ const initJokeBot = (chatboard) => {
         }
       case BOT_STATE.STAY_KNOCK_KNOCK:
         break;
+      case BOT_STATE.STAY_USER_ANSWER:
+        break;
+      case BOT_STATE.STAY_USER_KICK:
+        break;
+      case BOT_STATE.STAY_BOT_TURN:
+        break;
       default:
         //TODO: send guidance message
         helpMessage(chatboard);
