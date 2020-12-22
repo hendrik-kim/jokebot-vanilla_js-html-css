@@ -44,7 +44,7 @@ const getJokes = (callback) => {
     .ref('jokes')
     .once('value')
     .then((snapshot) => {
-      callback(snapshot.val());
+      callback(Object.values(snapshot.val()));
     });
 };
 

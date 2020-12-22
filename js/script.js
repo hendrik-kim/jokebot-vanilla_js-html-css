@@ -11,9 +11,8 @@ const init = () => {
   });
 
   sendLike = () => {
-    const joke = jokeBot.joke;
-    joke.userLike += 1;
-    console.log(joke);
+    // joke.userLike += 1;
+    console.log(jokeBot.joke);
   };
 
   sendChat = () => {
