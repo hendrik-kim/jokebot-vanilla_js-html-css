@@ -2,25 +2,31 @@ const initChatboard = () => {
   const chatboardElem = document.getElementById('chat-board');
   chatboard = {};
 
-  chatboardElem.addEventListener('publish', (event) => {
+  chatboardElem.addEventListener('publish', (evt) => {
     const chatMsgInput = document.getElementById('tbx-input');
+    const date = new Date();
 
-    if (event.detail.by === 'user') {
+    if (evt.detail.by === 'user') {
       const span = document.createElement('span');
       const br = document.createElement('br');
-      span.innerHTML = `User: ${event.detail.message} -> Bot (${new Date()})`;
+      span.innerHTML = `<label class="lbl-user-datetime">${date.toLocaleTimeString(
+        'en-US'
+      )}</label> User: ${evt.detail.message}`;
       chatboardElem.appendChild(span);
       chatboardElem.appendChild(br);
     } else {
-      // console.log('Bot in');
-      const span = document.createElement('span');
-      const br = document.createElement('br');
-      span.innerHTML = `Bot: ${event.detail.message} -> User (${new Date()})`;
-      chatboardElem.appendChild(span);
-      chatboardElem.appendChild(br);
-      // FIXME: need to be synchronized
       setTimeout(() => {
-        chatMsgInput.disabled = false;
+        // console.log('Bot in');
+        const span = document.createElement('span');
+        const br = document.createElement('br');
+        span.innerHTML = `Bot: ${
+          evt.detail.message
+        } <label class="lbl-bot-datetime">${date.toLocaleTimeString(
+          'en-US'
+        )}</label>`;
+        chatboardElem.appendChild(span);
+        chatboardElem.appendChild(br);
+        // FIXME: need to be synchronized
       }, 1000);
     }
   });

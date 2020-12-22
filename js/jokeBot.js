@@ -215,7 +215,9 @@ const initjokeBot = (chatboard) => {
             console.log(jokeBot.joke);
 
             chatboard.publish('Thank you ;)', 'bot');
-            chatboard.publish("Let's talk about more jokes", 'bot');
+            setTimeout(() => {
+              chatboard.publish("Let's talk about more jokes", 'bot');
+            }, 1000);
 
             jokeBot.state = BOT_STATE.INIT;
           });
