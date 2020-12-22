@@ -76,6 +76,7 @@ const initjokeBot = (chatboard) => {
     const hasThere = keywords.includes('there');
     const hasOk = keywords.includes('ok');
     const hasYes = keywords.includes('yes');
+    const hasSure = keywords.includes('sure');
     const hasNo = keywords.includes('no');
     const hasLove = keywords.includes('love');
     const hasLike = keywords.includes('like');
@@ -191,7 +192,7 @@ const initjokeBot = (chatboard) => {
         jokeBot.state = BOT_STATE.STAY_USER_ALLOWS_MOMERIZE;
         break;
       case BOT_STATE.STAY_USER_ALLOWS_MOMERIZE:
-        if (hasOk || hasYes) {
+        if (hasOk || hasYes || hasSure) {
           appendJoke(jokeBot.joke, () => {
             console.log(jokeBot.joke);
 
