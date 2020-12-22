@@ -17,10 +17,12 @@ const helpMessage = (chatboard) => {
   chatboard.publish("Sorry, I can't understand you.", 'bot');
 };
 
-const appendJoke = (joke, callback) => {
+const appendJoke = (newJoke, callback) => {
   getJokes((jokes) => {
-    const updatedJokes = jokes || [];
-    updatedJokes.push(joke);
+    newHashedKey = btoa(new Joke(newJoke.userAnswer, newJoke.userKick, null));
+    const updatedJokes = jokes || {};
+
+    //TODO: if one of jokes contains same hashed id with new joke, replace it.
 
     firebase
       .database()
@@ -53,7 +55,7 @@ class Joke {
   }
 }
 
-const initjokeBot = (chatboard) => {
+const initJokeBot = (chatboard) => {
   const jokeBotElem = document.createElement('jokeBot');
   jokeBot = {};
   jokeBot.state = BOT_STATE.INIT;

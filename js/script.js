@@ -4,7 +4,7 @@ const init = () => {
   const sendLikeBtnElem = document.getElementById('btn-like');
 
   window.chatboard = initChatboard();
-  window.jokeBot = initjokeBot(chatboard);
+  window.jokeBot = initJokeBot(chatboard);
 
   sendLikeBtnElem.addEventListener('click', (evt) => {
     sendLike();
