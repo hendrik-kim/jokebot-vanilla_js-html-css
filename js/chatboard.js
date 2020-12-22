@@ -14,8 +14,8 @@ const initChatboard = () => {
     } else {
       // console.log('Bot in');
       const span = document.createElement('span');
-      span.innerHTML = `Bot: ${event.detail.message} -> User (${new Date()})`;
       const br = document.createElement('br');
+      span.innerHTML = `Bot: ${event.detail.message} -> User (${new Date()})`;
       chatboardElem.appendChild(span);
       chatboardElem.appendChild(br);
       // FIXME: need to be synchronized

@@ -29,11 +29,15 @@ const initJokeBot = (chatboard) => {
         if (hasJoke || hasKnow || (hasTell && hasMe)) {
           getJokes((jokes) => {
             if (jokes) {
+              // if jokes is exist, tell random joke to user
+              const joke = jokes[Math.floor(Math.random() * jokes.length)];
+              chatbot.publish(joke, bot);
             } else {
               chatboard.publish(
                 'I don’t know any jokes yet, but I would love to learn one from you, can you tell me a Knock knock joke?',
                 'bot'
               );
+              chatbot.state = BOT_STATE.STAY_JOKE;
             }
           });
         } else {
