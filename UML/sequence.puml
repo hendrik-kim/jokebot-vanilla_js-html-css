@@ -4,7 +4,7 @@ actor Bot
 
 [-> User : user start app
 
-Bot <- User : Ask JokeBot "Hey Bot, tell me a joke."
+Bot <- User : Ask jokeBot "Hey Bot, tell me a joke."
 ref over Bot
     Check if there is a joke in DB and if not, ask the user to joke.
     1. If bot memories joke, shot joke.

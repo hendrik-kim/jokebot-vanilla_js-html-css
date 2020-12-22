@@ -5,7 +5,7 @@ const init = () => {
   const sendButton = document.getElementById('btn-send');
 
   window.chatboard = initChatboard();
-  window.jokeBot = initJokeBot(chatboard);
+  window.jokeBot = initjokeBot(chatboard);
 
   sendButton.addEventListener('click', () => {
     const message = chatMsgInput.value;
