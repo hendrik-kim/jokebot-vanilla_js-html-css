@@ -71,10 +71,12 @@ const initJokeBot = (chatboard) => {
         break;
       case BOT_STATE.STAY_USER_ANSWER:
         jokebot.joke.userAnswer = message;
-        chatboard.publish(`${message} who?`);
+        chatboard.publish(`${message} who?`, 'bot');
         jokebot.state = BOT_STATE.STAY_USER_KICK;
         break;
       case BOT_STATE.STAY_USER_KICK:
+        chatboard.publish(`Ha Ha, that's good one.`, 'bot');
+        jokebot.joke.userKick = message;
         break;
       case BOT_STATE.STAY_BOT_TURN:
         break;
