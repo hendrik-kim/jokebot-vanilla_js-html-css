@@ -19,10 +19,14 @@ const helpMessage = (chatboard) => {
 
 const appendJoke = (newJoke, callback) => {
   getJokes((jokes) => {
-    newHashedKey = btoa(new Joke(newJoke.userAnswer, newJoke.userKick, null));
+    const hashedKey = btoa(
+      new Joke(newJoke.userAnswer, newJoke.userKick, null)
+    );
     const updatedJokes = jokes || {};
 
     //TODO: if one of jokes contains same hashed id with new joke, replace it.
+
+    updatedJokes[hashedKey] = newJoke;
 
     firebase
       .database()
@@ -31,7 +35,7 @@ const appendJoke = (newJoke, callback) => {
         if (error) {
           console.error(error);
         } else {
-          callback(updatedJokes);
+          callback(Object.values(updatedJokes));
         }
       });
   });
