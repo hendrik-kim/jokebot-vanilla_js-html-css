@@ -15,6 +15,7 @@ const getJokes = (callback) => {
       callback(snapshot.val());
     });
 };
+
 class Joke {
   constructor(userAnswer, userKick, userLike) {
     this.userAnswer = userAnswer;
@@ -27,6 +28,7 @@ const initJokeBot = (chatboard) => {
   const jokeBotElem = document.createElement('jokeBot');
   jokeBot = {};
   jokeBot.state = BOT_STATE.INIT;
+  jokebot.joke = new Joke();
 
   jokeBot.stateTransit = (keywwords = []) => {
     switch (jokeBot.state) {
@@ -41,13 +43,13 @@ const initJokeBot = (chatboard) => {
             if (jokes) {
               // if jokes is exist, tell random joke to user
               const joke = jokes[Math.floor(Math.random() * jokes.length)];
-              chatbot.publish(joke, bot);
+              jokebot.publish(joke, bot);
             } else {
               chatboard.publish(
                 'I don’t know any jokes yet, but I would love to learn one from you, can you tell me a Knock knock joke?',
                 'bot'
               );
-              chatbot.state = BOT_STATE.STAY_KNOCK_KNOCK;
+              jokebot.state = BOT_STATE.STAY_KNOCK_KNOCK;
             }
           });
         } else {
@@ -57,12 +59,14 @@ const initJokeBot = (chatboard) => {
       case BOT_STATE.STAY_KNOCK_KNOCK:
         if (hasKnock) {
           chatboard.publish("Who's there?", 'bot');
-          chatbot.state = BOT_STATE.STAY_USER_ANSWER;
+          jokebot.state = BOT_STATE.STAY_USER_ANSWER;
         } else {
           helpMessage(chatboard);
         }
         break;
       case BOT_STATE.STAY_USER_ANSWER:
+        const userAnswer = keywwords(' ');
+        jokebot.joke.userAnswer = userAnswer;
         break;
       case BOT_STATE.STAY_USER_KICK:
         break;
