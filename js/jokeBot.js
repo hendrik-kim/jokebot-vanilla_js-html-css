@@ -67,6 +67,8 @@ const initJokeBot = (chatboard) => {
       case BOT_STATE.STAY_USER_ANSWER:
         const userAnswer = keywwords(' ');
         jokebot.joke.userAnswer = userAnswer;
+        chatboard.publish(`${userAnswer} who?`);
+        jokebot.state = BOT_STATE.STAY_USER_KICK;
         break;
       case BOT_STATE.STAY_USER_KICK:
         break;
