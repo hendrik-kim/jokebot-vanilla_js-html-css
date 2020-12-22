@@ -8,14 +8,22 @@ const BOT_STATE = Object.freeze({
   STAY_BOT_WAIT_USER_WHO: 7,
 });
 
-const getJokes = (callback) => {
-  firebase
-    .database()
-    .ref('jokes')
-    .once('value')
-    .then((snapshot) => {
-      callback(snapshot.val());
-    });
+const appendJoke = (joke, callback) => {
+  getJokes((jokes) => {
+    const updatedJokes = jokes || [];
+    updatedJokes.push(joke);
+
+    firebase
+      .database()
+      .ref('jokes')
+      .set(updatedJokes, (error) => {
+        if (error) {
+          console.error(error);
+        } else {
+          callback(updatedJokes);
+        }
+      });
+  });
 };
 
 class Joke {
