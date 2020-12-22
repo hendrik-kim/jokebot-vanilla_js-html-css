@@ -1,17 +1,28 @@
 const init = () => {
   // console.log('Enter chatroom');
 
-  const chatMsgInput = document.getElementById('tbx-input');
-  const sendButton = document.getElementById('btn-send');
+  const msgInputElem = document.getElementById('tbx-input');
+  const sendBtnElem = document.getElementById('btn-send');
 
   window.chatboard = initChatboard();
   window.jokeBot = initjokeBot(chatboard);
 
-  sendButton.addEventListener('click', () => {
-    const message = chatMsgInput.value;
+  sendChat = () => {
+    const message = msgInputElem.value;
     chatboard.publish(message, 'user');
     jokeBot.getMessage(message);
-    chatMsgInput.value = null;
+    msgInputElem.value = null;
+  };
+
+  sendBtnElem.addEventListener('click', () => {
+    sendChat();
+  });
+
+  msgInputElem.addEventListener('keyup', function (evt) {
+    if (evt.keyCode === 13) {
+      evt.preventDefault();
+      sendChat();
+    }
   });
 };
 

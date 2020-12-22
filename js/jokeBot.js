@@ -1,12 +1,13 @@
 const BOT_STATE = Object.freeze({
   INIT: 1,
-  STAY_KNOCK_KNOCK: 2,
+  STAY_BOT_USER_KNOCK: 2,
   STAY_USER_ANSWER: 3,
   STAY_USER_KICK: 4,
   STAY_BOT_TURN: 5,
   STAY_USER_WHO: 6,
   STAY_BOT_WAIT_USER_WHO: 7,
-  STAY_USER_ASK_ANOTHER_JOKE: 8,
+  STAY_BOT_WAIT_USER_INPUT: 8,
+  STAY_USER_ASK_ANOTHER_JOKE: 9,
 });
 
 const appendJoke = (joke, callback) => {
@@ -67,11 +68,12 @@ const initjokeBot = (chatboard) => {
     const hasWant = keywords.includes('want');
     const hasHear = keywords.includes('hear');
     const hasWho = keywords.includes('who');
-    const hasAskWho = keywords.includes('who?');
     const hasThere = keywords.includes('there');
     const hasOk = keywords.includes('ok');
     const hasYes = keywords.includes('yes');
     const hasNo = keywords.includes('no');
+    const hasLove = keywords.includes('love');
+    const hasLike = keywords.includes('like');
 
     switch (jokeBot.state) {
       case BOT_STATE.INIT:
@@ -88,7 +90,7 @@ const initjokeBot = (chatboard) => {
                 'I don’t know any jokes yet, but I would love to learn one from you, can you tell me a Knock knock joke?',
                 'bot'
               );
-              jokeBot.state = BOT_STATE.STAY_KNOCK_KNOCK;
+              jokeBot.state = BOT_STATE.STAY_BOT_USER_KNOCK;
             }
           });
         } else {
@@ -96,7 +98,7 @@ const initjokeBot = (chatboard) => {
           helpMessage(chatboard);
         }
         break;
-      case BOT_STATE.STAY_KNOCK_KNOCK:
+      case BOT_STATE.STAY_BOT_USER_KNOCK:
         if (hasKnock) {
           chatboard.publish("Who's there?", 'bot');
           jokeBot.state = BOT_STATE.STAY_USER_ANSWER;
@@ -151,10 +153,26 @@ const initjokeBot = (chatboard) => {
         }
         break;
       case BOT_STATE.STAY_BOT_WAIT_USER_WHO:
-        if (hasWho || hasAskWho) {
+        if (hasWho) {
           chatboard.publish(jokeBot.joke.userKick, 'bot');
           chatboard.publish('How was it? Do you like it?', 'bot');
           jokeBot.state = BOT_STATE.STAY_USER_ASK_ANOTHER_JOKE;
+        } else {
+          helpMessage(chatboard);
+        }
+        break;
+      case BOT_STATE.STAY_BOT_WAIT_USER_INPUT:
+        if (hasLike || hasLove) {
+          // TODO: add function to add like bot's joke
+          chatboard.publish('Thank you.', 'bot');
+          chatboard.publish('Do you want another joke? Then ask me.', 'bot');
+          jokeBot.state = BOT_STATE.STAY_USER_ASK_ANOTHER_JOKE;
+        } else if (hasNo) {
+          chatboard.publish(
+            'Ah... Ok :( Then please me tell you a joke another time.',
+            'bot'
+          );
+          jokeBot.state = BOT_STATE.INIT;
         } else {
           helpMessage(chatboard);
         }
@@ -185,7 +203,7 @@ const initjokeBot = (chatboard) => {
   });
 
   const extractKeyword = (message) => {
-    return message.replace(/[,.]/gi, '').split(' ');
+    return message.replace(/[,.?]/gi, '').split(' ');
   };
 
   const helpMessage = (chatboard) => {
