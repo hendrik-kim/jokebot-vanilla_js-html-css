@@ -48,6 +48,12 @@ const initJokeBot = (chatboard) => {
           helpMessage(chatboard);
         }
       case BOT_STATE.STAY_KNOCK_KNOCK:
+        if (hasKnock) {
+          chatboard.publish("Who's there?", 'bot');
+          chatbot.state = BOT_STATE.STAY_USER_ANSWER;
+        } else {
+          helpMessage(chatboard);
+        }
         break;
       case BOT_STATE.STAY_USER_ANSWER:
         break;
