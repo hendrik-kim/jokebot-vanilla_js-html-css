@@ -1,6 +1,4 @@
 const init = () => {
-  // console.log('Enter chatroom');
-
   const msgInputElem = document.getElementById('tbx-input');
   const sendBtnElem = document.getElementById('btn-send');
 
