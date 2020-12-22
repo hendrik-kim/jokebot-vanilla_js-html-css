@@ -1,9 +1,14 @@
 const init = () => {
   const msgInputElem = document.getElementById('tbx-input');
   const sendBtnElem = document.getElementById('btn-send');
+  const likeBtnElem = document.getElementById('btn-like');
 
   window.chatboard = initChatboard();
   window.jokeBot = initjokeBot(chatboard);
+
+  likeBtnElem.addEventListener('click', (evt) => {
+    console.log('like');
+  });
 
   sendChat = () => {
     const message = msgInputElem.value;
