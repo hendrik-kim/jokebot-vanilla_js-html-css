@@ -17,11 +17,18 @@ const helpMessage = (chatboard) => {
   chatboard.publish("Sorry, I can't understand you.", 'bot');
 };
 
+const hashCode = (s) =>
+  s.split('').reduce((a, b) => {
+    a = (a << 5) - a + b.charCodeAt(0);
+    return a & a;
+  }, 0);
+
 const appendJoke = (newJoke, callback) => {
   getJokes((jokes) => {
-    const hashedKey = btoa(
+    const hashedKey = hashCode(
       JSON.stringify(new Joke(newJoke.userAnswer, newJoke.userKick, null))
     );
+
     const updatedJokes = jokes || {};
     updatedJokes[hashedKey] = newJoke;
 
