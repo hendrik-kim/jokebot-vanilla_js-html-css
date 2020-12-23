@@ -28,7 +28,7 @@ const initChatboard = () => {
           evt.detail.message
         } <label class="lbl-bot-datetime">${date.toLocaleTimeString(
           'en-US'
-        )}</label> <label>${evt.detail.like}</label>`;
+        )}</label>`;
         chatboardElem.appendChild(span);
         chatboardElem.appendChild(br);
         botMessageElem.innerHTML = evt.detail.message;
@@ -37,13 +37,12 @@ const initChatboard = () => {
     }
   });
 
-  chatboard.publish = (message, by, like) => {
+  chatboard.publish = (message, by) => {
     chatboardElem.dispatchEvent(
       new CustomEvent('publish', {
         detail: {
           by: by,
           message: message,
-          like: like,
         },
       })
     );

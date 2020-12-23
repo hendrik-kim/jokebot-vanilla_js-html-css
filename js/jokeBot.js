@@ -180,7 +180,7 @@ const initJokeBot = (chatboard, attendee) => {
             chatboard.publish("Lol Isn't it funny?", 'bot');
           }, 2000);
           setTimeout(() => {
-            chatboard.publish('Do you like it?', 'bot', jokeBot.joke.userLike);
+            chatboard.publish('Do you like it?', 'bot');
           }, 4000);
           jokeBot.state = BOT_STATE.STAY_BOT_TELL_ANOTHER_JOKE;
         } else {
