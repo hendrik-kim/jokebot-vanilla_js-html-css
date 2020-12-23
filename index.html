@@ -2,12 +2,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/styles.css" />
     <title>Hendrik's jokeBot</title>
   </head>
   <body>
     <header>Hendrik's jokeBot</header>
 
     <main class="chat-container">
+      <section id="atd-container">
+        <div id="bot-section">
+          <label id="bot-message"></label>
+          <label id="bot-time"></label>
+        </div>
+        <div id="user-section">
+          <label id="user-message"></label>
+          <label id="user-time"></label>
+        </div>
+      </section>
       <section id="chat-board"></section>
       <div class="" id="input-container">
         <input type="text" id="tbx-input" />
@@ -21,6 +32,7 @@
     <script src="js/config/index.js"></script>
     <script src="js/config/firebaseConfig.js"></script>
     <script src="js/chatboard.js"></script>
+    <script src="js/attendee.js"></script>
     <script src="js/jokeBot.js"></script>
     <script src="js/script.js"></script>
   </body>

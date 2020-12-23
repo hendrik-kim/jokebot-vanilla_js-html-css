@@ -90,7 +90,7 @@ class Joke {
   }
 }
 
-const initJokeBot = (chatboard) => {
+const initJokeBot = (chatboard, attendee) => {
   const jokeBotElem = document.createElement('jokeBot');
   jokeBot = {};
   jokeBot.state = BOT_STATE.INIT;
@@ -172,7 +172,7 @@ const initJokeBot = (chatboard) => {
             chatboard.publish("Lol Isn't it funny?", 'bot');
           }, 2000);
           setTimeout(() => {
-            chatboard.publish('Do you like it?', 'bot');
+            chatboard.publish('Do you like it?', 'bot', jokeBot.joke.userLike);
           }, 4000);
           jokeBot.state = BOT_STATE.STAY_BOT_TELL_ANOTHER_JOKE;
         } else {
@@ -182,6 +182,7 @@ const initJokeBot = (chatboard) => {
       case BOT_STATE.STAY_BOT_TELL_ANOTHER_JOKE:
         if (hasYes || hasLike || hasLove) {
           jokeBot.joke.userLike += 1;
+          chatboard.publish('🧡', 'user');
           appendJoke(jokeBot.joke, () => {});
           console.log(jokeBot.joke);
           getJokes((jokes) => {
