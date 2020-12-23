@@ -183,6 +183,8 @@ const initJokeBot = (chatboard) => {
             'No problem. Ask me anytime to tell you my jokes ;)',
             'bot'
           );
+          jokeBot.joke.userLike -= 1;
+          appendJoke(jokeBot.joke, () => {});
           jokeBot.state = BOT_STATE.INIT;
         } else {
           helpMessage(chatboard);
