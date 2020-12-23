@@ -7,8 +7,8 @@ const init = () => {
   window.jokeBot = initJokeBot(chatboard);
 
   sendLike = () => {
-    // validate jokeBot but still return error
-    if (jokeBot) {
+    // FIXME: need to check later
+    if (jokeBot.joke.jokeId != undefined) {
       jokeBot.joke.userLike += 1;
       appendJoke(jokeBot.joke, () => {
         console.log(jokeBot.joke);

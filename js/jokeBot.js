@@ -34,6 +34,7 @@ const appendJoke = (newJoke, callback) => {
     );
 
     newJoke.jokeId = hashedKey;
+    newJoke.userLike = 0;
 
     if (jokes) {
       jokes.forEach((joke) => {
@@ -179,10 +180,13 @@ const initJokeBot = (chatboard) => {
         }
         break;
       case BOT_STATE.STAY_BOT_TELL_ANOTHER_JOKE:
-        if (hasYes) {
+        if (hasYes || hasLike || hasLove) {
+          jokeBot.joke.userLike += 1;
+          appendJoke(jokeBot.joke, () => {});
+          console.log(jokeBot.joke);
           getJokes((jokes) => {
             jokeBot.joke = jokes[Math.floor(Math.random() * jokes.length)];
-            console.log(jokeBot.joke);
+            // console.log(jokeBot.joke);
             chatboard.publish('Ok, Let me tell you another one.', 'bot');
             setTimeout(() => {
               chatboard.publish('Knock, knock', 'bot');
