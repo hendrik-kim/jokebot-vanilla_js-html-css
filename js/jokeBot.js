@@ -17,20 +17,32 @@ const helpMessage = (chatboard) => {
   chatboard.publish("Sorry, I can't understand you.", 'bot');
 };
 
-const hashCode = (s) =>
-  s.split('').reduce((a, b) => {
-    a = (a << 5) - a + b.charCodeAt(0);
-    return a & a;
-  }, 0);
+// const hashCode = (s) =>
+//   s.split('').reduce((a, b) => {
+//     a = (a << 5) - a + b.charCodeAt(0);
+//     return a & a;
+//   }, 0);
 
 const appendJoke = (newJoke, callback) => {
   getJokes((jokes) => {
-    const hashedKey = hashCode(
-      JSON.stringify(new Joke(newJoke.userAnswer, newJoke.userKick, null))
+    var jokeMap = new Map();
+    // const hashedKey = hashCode(
+    //   JSON.stringify(new Joke(newJoke.userAnswer, newJoke.userKick))
+    // );
+    const hashedKey = btoa(
+      JSON.stringify(new Joke(newJoke.userAnswer, newJoke.userKick))
     );
 
-    const updatedJokes = jokes || {};
-    updatedJokes[hashedKey] = newJoke;
+    newJoke.jokeId = hashedKey;
+
+    if (jokes) {
+      jokes.forEach((joke) => {
+        jokeMap.set(joke.jokeId, joke);
+      });
+    }
+
+    jokeMap.set(hashedKey, newJoke);
+    var updatedJokes = Array.from(jokeMap.values());
 
     firebase
       .database()
@@ -58,7 +70,8 @@ const getJokes = (callback) => {
 };
 
 class Joke {
-  constructor(userAnswer, userKick, userLike = 0) {
+  constructor(jokeId, userAnswer, userKick, userLike = 0) {
+    this.jokeId = jokeId;
     this.userAnswer = userAnswer;
     this.userKick = userKick;
     this.userLike = userLike;
