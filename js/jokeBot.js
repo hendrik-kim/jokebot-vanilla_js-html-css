@@ -57,6 +57,29 @@ const appendJoke = (newJoke, callback) => {
   });
 };
 
+const removeJoke = (newJoke, callback) => {
+  getJokes((jokes) => {
+    const hashedKey = btoa(
+      JSON.stringify(new Joke(newJoke.userAnswer, newJoke.userKick))
+    );
+
+    newJoke.jokeId = hashedKey;
+
+    firebase
+      .database()
+      .ref('jokes')
+      .orderByChild('jokeId')
+      .equalTo(newJoke.jokeId)
+      .on('child_added', (snapshot) => {
+        // if (error) {
+        //   console.error(error);
+        // } else {
+        snapshot.ref.remove();
+        // }
+      });
+  });
+};
+
 const getJokes = (callback) => {
   firebase
     .database()
@@ -184,7 +207,10 @@ const initJokeBot = (chatboard) => {
             'bot'
           );
           jokeBot.joke.userLike -= 1;
-          appendJoke(jokeBot.joke, () => {});
+
+          jokeBot.joke.userLike <= 0
+            ? removeJoke(jokeBot.joke, () => {})
+            : appendJoke(jokeBot.joke, () => {});
           jokeBot.state = BOT_STATE.INIT;
         } else {
           helpMessage(chatboard);
