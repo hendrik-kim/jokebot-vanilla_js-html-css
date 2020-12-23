@@ -90,7 +90,7 @@ const getRandomJoke = (jokes) => {
 };
 
 class Joke {
-  constructor(jokeId, userAnswer, userKick, userLike = 0) {
+  constructor(jokeId, userAnswer, userKick, userLike = 1) {
     this.jokeId = jokeId;
     this.userAnswer = userAnswer;
     this.userKick = userKick;
@@ -98,7 +98,7 @@ class Joke {
   }
 }
 
-const initJokeBot = (chatboard, attendee) => {
+const initJokeBot = (chatboard) => {
   const jokeBotElem = document.createElement('jokeBot');
   jokeBot = {};
   jokeBot.state = BOT_STATE.INIT;
@@ -208,8 +208,7 @@ const initJokeBot = (chatboard, attendee) => {
           );
           jokeBot.joke.userLike -= 1;
           console.log(jokeBot.joke);
-
-          jokeBot.joke.userLike < 0
+          jokeBot.joke.userLike <= 0
             ? removeJoke(jokeBot.joke, () => {})
             : appendJoke(jokeBot.joke, () => {});
           jokeBot.state = BOT_STATE.INIT;
