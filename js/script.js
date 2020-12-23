@@ -12,7 +12,9 @@ const init = () => {
 
   sendLike = () => {
     jokeBot.joke.userLike += 1;
-    console.log(jokeBot.joke);
+    appendJoke(jokeBot.joke, () => {
+      console.log(jokeBot.joke);
+    });
   };
 
   sendChat = () => {
