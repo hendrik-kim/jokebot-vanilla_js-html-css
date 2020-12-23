@@ -6,15 +6,14 @@ const init = () => {
   window.chatboard = initChatboard();
   window.jokeBot = initJokeBot(chatboard);
 
-  sendLikeBtnElem.addEventListener('click', (evt) => {
-    sendLike();
-  });
-
   sendLike = () => {
-    jokeBot.joke.userLike += 1;
-    appendJoke(jokeBot.joke, () => {
-      console.log(jokeBot.joke);
-    });
+    // validate jokeBot but still return error
+    if (jokeBot) {
+      jokeBot.joke.userLike += 1;
+      appendJoke(jokeBot.joke, () => {
+        console.log(jokeBot.joke);
+      });
+    }
   };
 
   sendChat = () => {
@@ -38,7 +37,6 @@ const init = () => {
   });
 
   sendLikeBtnElem.addEventListener('click', function (evt) {
-    //FIXME: double clicked when event excuted
     evt.preventDefault();
     sendLike();
   });
