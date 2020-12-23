@@ -227,13 +227,13 @@ const initJokeBot = (chatboard, attendee) => {
         break;
       case BOT_STATE.STAY_USER_JOKE_FIRST:
         jokeBot.joke.userAnswer = message;
-        console.log(jokeBot.joke.userAnswer);
+        // console.log(jokeBot.joke.userAnswer);
         chatboard.publish(`${message} who?`, 'bot');
         jokeBot.state = BOT_STATE.STAY_USER_JOKE_SECOND;
         break;
       case BOT_STATE.STAY_USER_JOKE_SECOND:
         jokeBot.joke.userKick = message;
-        console.log(jokeBot.joke.userKick);
+        // console.log(jokeBot.joke.userKick);
         chatboard.publish('Ha Ha, that’s a good one.', 'bot');
         setTimeout(() => {
           chatboard.publish('Can I use that joke?', 'bot');
