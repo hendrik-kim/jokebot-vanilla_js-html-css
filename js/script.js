@@ -36,6 +36,12 @@ const init = () => {
       sendChat();
     }
   });
+
+  sendLikeBtnElem.addEventListener('click', function (evt) {
+    //FIXME: double clicked when event excuted
+    evt.preventDefault();
+    sendLike();
+  });
 };
 
 ready(init);
