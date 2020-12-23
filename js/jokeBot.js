@@ -57,27 +57,15 @@ const appendJoke = (newJoke, callback) => {
   });
 };
 
-const removeJoke = (newJoke, callback) => {
-  getJokes((jokes) => {
-    const hashedKey = btoa(
-      JSON.stringify(new Joke(newJoke.userAnswer, newJoke.userKick))
-    );
-
-    newJoke.jokeId = hashedKey;
-
-    firebase
-      .database()
-      .ref('jokes')
-      .orderByChild('jokeId')
-      .equalTo(newJoke.jokeId)
-      .on('child_added', (snapshot) => {
-        // if (error) {
-        //   console.error(error);
-        // } else {
-        snapshot.ref.remove();
-        // }
-      });
-  });
+const removeJoke = (newJoke) => {
+  firebase
+    .database()
+    .ref('jokes')
+    .orderByChild('jokeId')
+    .equalTo(newJoke.jokeId)
+    .on('child_added', (snapshot) => {
+      snapshot.ref.remove();
+    });
 };
 
 const getJokes = (callback) => {
