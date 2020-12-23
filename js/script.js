@@ -2,18 +2,21 @@ const init = () => {
   const msgInputElem = document.getElementById('tbx-input');
   const sendChatBtnElem = document.getElementById('btn-send');
   const sendLikeBtnElem = document.getElementById('btn-like');
+  const chatboardElem = document.getElementById('chat-board');
 
   window.chatboard = initChatboard();
   window.attendee = initAttendeeSection();
   window.jokeBot = initJokeBot(chatboard);
 
   sendLike = () => {
-    // FIXME: need to check later
     if (jokeBot.joke.jokeId != undefined) {
       jokeBot.joke.userLike += 1;
-      appendJoke(jokeBot.joke, () => {
-        console.log(jokeBot.joke);
-      });
+      appendJoke(jokeBot.joke, () => {});
+
+      const last = chatboardElem.children[chatboardElem.children.length - 2];
+      if (last.tagName === 'SPAN' && last.textContent.startsWith('Bot')) {
+        last.textContent += ' ❤️';
+      }
     }
   };
 

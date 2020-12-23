@@ -17,24 +17,14 @@ const helpMessage = (chatboard) => {
   chatboard.publish("Sorry, I can't understand you.", 'bot');
 };
 
-// const hashCode = (s) =>
-//   s.split('').reduce((a, b) => {
-//     a = (a << 5) - a + b.charCodeAt(0);
-//     return a & a;
-//   }, 0);
-
 const appendJoke = (newJoke, callback) => {
   getJokes((jokes) => {
     var jokeMap = new Map();
-    // const hashedKey = hashCode(
-    //   JSON.stringify(new Joke(newJoke.userAnswer, newJoke.userKick))
-    // );
     const hashedKey = btoa(
       JSON.stringify(new Joke(newJoke.userAnswer, newJoke.userKick))
     );
 
     newJoke.jokeId = hashedKey;
-    newJoke.userLike = 0;
 
     if (jokes) {
       jokes.forEach((joke) => {
@@ -79,6 +69,24 @@ const getJokes = (callback) => {
         ? callback(null)
         : callback(Object.values(snapshot.val()));
     });
+};
+
+// This helps user to get most liked joke oftenly.
+const getRandomJoke = (jokes) => {
+  const getUserLike = (joke) => joke.userLike || 1;
+
+  const jokesDistribute = jokes.reduce((acc, joke) => {
+    const jokeDistribute = [];
+    for (let i = 0; i < getUserLike(joke); i++) {
+      jokeDistribute.push(joke);
+    }
+    return acc.concat(jokeDistribute);
+  }, []);
+
+  const joke =
+    jokesDistribute[Math.floor(Math.random() * jokesDistribute.length)];
+  console.log(jokesDistribute);
+  return joke;
 };
 
 class Joke {
@@ -126,10 +134,10 @@ const initJokeBot = (chatboard, attendee) => {
         } else if (hasJoke || hasKnow || (hasTell && hasMe)) {
           getJokes((jokes) => {
             if (jokes) {
-              // if jokes is exist, tell random joke to user
               console.log(jokes);
-              jokeBot.joke = jokes[Math.floor(Math.random() * jokes.length)];
+              jokeBot.joke = getRandomJoke(jokes);
               console.log(jokeBot.joke);
+
               chatboard.publish('Ok. I have a funny joke for you :)', 'bot');
               setTimeout(() => {
                 chatboard.publish('Let me start.', 'bot');
@@ -181,13 +189,12 @@ const initJokeBot = (chatboard, attendee) => {
         break;
       case BOT_STATE.STAY_BOT_TELL_ANOTHER_JOKE:
         if (hasYes || hasLike || hasLove) {
-          jokeBot.joke.userLike += 1;
-          chatboard.publish('🧡', 'user');
+          // jokeBot.joke.userLike += 1;
+          sendLike();
           appendJoke(jokeBot.joke, () => {});
           console.log(jokeBot.joke);
           getJokes((jokes) => {
-            jokeBot.joke = jokes[Math.floor(Math.random() * jokes.length)];
-            // console.log(jokeBot.joke);
+            jokeBot.joke = getRandomJoke(jokes);
             chatboard.publish('Ok, Let me tell you another one.', 'bot');
             setTimeout(() => {
               chatboard.publish('Knock, knock', 'bot');
@@ -200,8 +207,9 @@ const initJokeBot = (chatboard, attendee) => {
             'bot'
           );
           jokeBot.joke.userLike -= 1;
+          console.log(jokeBot.joke);
 
-          jokeBot.joke.userLike <= 0
+          jokeBot.joke.userLike < 0
             ? removeJoke(jokeBot.joke, () => {})
             : appendJoke(jokeBot.joke, () => {});
           jokeBot.state = BOT_STATE.INIT;
@@ -210,7 +218,6 @@ const initJokeBot = (chatboard, attendee) => {
         }
         break;
       case BOT_STATE.STAY_BOT_ASK_USER_JOKE:
-        console.log('bot: knock knock');
         if (hasKnock) {
           chatboard.publish("Who's there?", 'bot');
           jokeBot.state = BOT_STATE.STAY_USER_JOKE_FIRST;
@@ -240,7 +247,7 @@ const initJokeBot = (chatboard, attendee) => {
       case BOT_STATE.STAY_USER_ALLOWS_MOMERIZE:
         if (hasOk || hasYes || hasSure) {
           appendJoke(jokeBot.joke, () => {
-            console.log(jokeBot.joke);
+            // console.log(jokeBot.joke);
 
             chatboard.publish('Thank you ;)', 'bot');
             setTimeout(() => {
