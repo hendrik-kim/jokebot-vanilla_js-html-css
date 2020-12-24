@@ -126,13 +126,13 @@ aside {
 }
 
 .msg-box p {
-  font-weight: 500;
-  color: #272727;
+  font-weight: 600;
+  color: #707070;
 }
 
 .msg-box .message {
   font-size: 0.8rem;
-  color: #828282;
+  color: #cdcdcd;
   line-height: 1.2rem;
 }
 
@@ -260,6 +260,18 @@ aside {
 }
 
 @media (max-width: 500px) {
+  #chat-board {
+    padding: 0;
+  }
+
+  #chat-board div {
+    margin-top: 0.25rem;
+  }
+
+  #chat-board .you {
+    width: 15rem;
+  }
+
   #chat-board .you .message {
     padding: 20px;
     word-break: break-all;
@@ -267,7 +279,7 @@ aside {
     max-width: 50%;
     min-width: 20%;
     text-align: left;
-    border-radius: 20px;
+    border-radius: 30px;
     display: inline-block;
   }
 

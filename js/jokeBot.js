@@ -90,7 +90,7 @@ const getRandomJoke = (jokes) => {
 };
 
 class Joke {
-  constructor(jokeId, userAnswer, userKick, userLike = 1) {
+  constructor(jokeId, userAnswer, userKick, userLike = 0) {
     this.jokeId = jokeId;
     this.userAnswer = userAnswer;
     this.userKick = userKick;
@@ -204,12 +204,12 @@ const initJokeBot = (chatboard) => {
           });
         } else if (hasNo) {
           chatboard.publish(
-            'No problem. Ask me anytime to tell you my jokes ;)',
+            'No problem. Ask me if there are any jokes to tell you anytime. ;)',
             'bot'
           );
           jokeBot.joke.userLike -= 1;
           console.log(jokeBot.joke);
-          jokeBot.joke.userLike <= 0
+          jokeBot.joke.userLike < 0
             ? removeJoke(jokeBot.joke, () => {})
             : appendJoke(jokeBot.joke, () => {});
           jokeBot.state = BOT_STATE.INIT;

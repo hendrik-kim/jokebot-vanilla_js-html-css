@@ -10,9 +10,9 @@ const initChatboard = () => {
     const date = new Date();
 
     if (evt.detail.by === 'user') {
-      const span = document.createElement('div');
+      const div = document.createElement('div');
       const br = document.createElement('br');
-      span.innerHTML = `
+      div.innerHTML = `
       <div class="me">
         <div class="entete">
           <label class="chat-datetime">${date.toLocaleTimeString(
@@ -24,7 +24,7 @@ const initChatboard = () => {
         </div>
       </div>
       `;
-      chatboardElem.appendChild(span);
+      chatboardElem.appendChild(div);
       chatboardElem.appendChild(br);
 
       userMessageElem.innerHTML =
@@ -48,9 +48,9 @@ const initChatboard = () => {
       chatboardElem.appendChild(br);
     } else {
       setTimeout(() => {
-        const span = document.createElement('span');
+        const div = document.createElement('div');
         const br = document.createElement('br');
-        span.innerHTML = `
+        div.innerHTML = `
           <div class="you">
           <div class="entete">
             <lable class="chat-datetime">${date.toLocaleTimeString(
@@ -64,7 +64,7 @@ const initChatboard = () => {
         </div>
         `;
 
-        chatboardElem.appendChild(span);
+        chatboardElem.appendChild(div);
         chatboardElem.appendChild(br);
         botMessageElem.innerHTML =
           evt.detail.message.length > 5
