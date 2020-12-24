@@ -15,8 +15,8 @@ const initChatboard = () => {
       div.className = 'message-wrapper';
 
       div.innerHTML = `
-      <div class="me">
-        <div class="entete">
+      <div class="user-message">
+        <div class="date-message-wrapper">
           <label class="chat-datetime">${date.toLocaleTimeString(
             'en-US'
           )}</label>
@@ -53,8 +53,8 @@ const initChatboard = () => {
         const div = document.createElement('div');
         const br = document.createElement('br');
         div.innerHTML = `
-          <div class="you">
-          <div class="entete">
+          <div class="bot-message">
+          <div class="date-message-wrapper">
             <lable class="chat-datetime">${date.toLocaleTimeString(
               'en-US'
             )}</lable>
