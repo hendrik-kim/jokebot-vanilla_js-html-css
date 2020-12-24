@@ -271,7 +271,7 @@ aside {
     display: inline-block;
   }
 
-  .entete {
+  .datetime-wrapper {
     min-width: 9rem;
   }
 }

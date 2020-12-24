@@ -247,7 +247,7 @@ const initJokeBot = (chatboard) => {
       case BOT_STATE.STAY_USER_ALLOWS_MOMERIZE:
         if (hasOk || hasYes || hasSure) {
           appendJoke(jokeBot.joke, () => {
-            // console.log(jokeBot.joke);
+            console.log(jokeBot.joke);
 
             chatboard.publish('Thank you ;)', 'bot');
             setTimeout(() => {
