@@ -2,7 +2,7 @@ const init = () => {
   const msgInputElem = document.getElementById('tbx-input');
   const sendChatBtnElem = document.getElementById('btn-send');
   const sendLikeBtnElem = document.getElementById('btn-like');
-  const chatboardElem = document.getElementById('chat-board');
+  // const chatboardElem = document.getElementById('chat-board');
 
   window.chatboard = initChatboard();
   window.jokeBot = initJokeBot(chatboard);

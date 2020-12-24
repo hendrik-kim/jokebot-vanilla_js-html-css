@@ -12,6 +12,8 @@ const initChatboard = () => {
     if (evt.detail.by === 'user') {
       const div = document.createElement('div');
       const br = document.createElement('br');
+      div.className = 'message-wrapper';
+
       div.innerHTML = `
       <div class="me">
         <div class="entete">

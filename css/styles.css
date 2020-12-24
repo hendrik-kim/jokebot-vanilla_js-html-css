@@ -154,7 +154,6 @@ aside {
 }
 
 #chat-board .me {
-  text-align: right;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -204,6 +203,10 @@ aside {
 .chat-datetime {
   font-size: 0.7rem;
   color: #828282;
+}
+
+.message-wrapper {
+  align-self: flex-end;
 }
 
 /* Input */
@@ -260,18 +263,6 @@ aside {
 }
 
 @media (max-width: 500px) {
-  #chat-board {
-    padding: 0;
-  }
-
-  #chat-board div {
-    margin-top: 0.25rem;
-  }
-
-  #chat-board .you {
-    width: 15rem;
-  }
-
   #chat-board .you .message {
     padding: 20px;
     word-break: break-all;
@@ -279,8 +270,22 @@ aside {
     max-width: 50%;
     min-width: 20%;
     text-align: left;
-    border-radius: 30px;
+    border-radius: 20px;
     display: inline-block;
+  }
+
+  #chat-board .you {
+    width: 15rem;
+  }
+
+  #chat-board .me {
+    width: 15rem;
+  }
+
+  #chat-board .me .message {
+    width: 15rem;
+    max-width: 50%;
+    min-width: 20%;
   }
 
   .datetime-wrapper {
