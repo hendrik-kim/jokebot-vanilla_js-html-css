@@ -5,7 +5,6 @@ const init = () => {
   const chatboardElem = document.getElementById('chat-board');
 
   window.chatboard = initChatboard();
-  window.attendee = initAttendeeSection();
   window.jokeBot = initJokeBot(chatboard);
 
   sendLike = () => {
@@ -13,10 +12,10 @@ const init = () => {
       jokeBot.joke.userLike += 1;
       appendJoke(jokeBot.joke, () => {});
 
-      const last = chatboardElem.children[chatboardElem.children.length - 2];
-      if (last.tagName === 'SPAN' && last.textContent.startsWith('Bot')) {
-        last.textContent += ' ❤️';
-      }
+      // const last = chatboardElem.children[chatboardElem.children.length - 2];
+      // console.log(last.textContent);
+      // if (last.tagName === 'LABEL' && last.textContent.startsWith('Bot')) {
+      chatboard.publish('❤️', 'user');
     }
   };
 

@@ -131,7 +131,7 @@ const initJokeBot = (chatboard) => {
         if (hasWant && hasMy && hasJoke) {
           chatboard.publish('Ok, tell me your joke', 'bot');
           jokeBot.state = BOT_STATE.STAY_BOT_ASK_USER_JOKE;
-        } else if (hasJoke || hasKnow || (hasTell && hasMe)) {
+        } else if (hasJoke || hasKnow || (hasTell && hasMe) || hasOk) {
           getJokes((jokes) => {
             if (jokes) {
               console.log(jokes);
@@ -189,8 +189,9 @@ const initJokeBot = (chatboard) => {
         break;
       case BOT_STATE.STAY_BOT_TELL_ANOTHER_JOKE:
         if (hasYes || hasLike || hasLove) {
-          // jokeBot.joke.userLike += 1;
-          sendLike();
+          jokeBot.joke.userLike += 1;
+          chatboard.publish('❤️', 'user');
+          // sendLike();
           appendJoke(jokeBot.joke, () => {});
           console.log(jokeBot.joke);
           getJokes((jokes) => {
