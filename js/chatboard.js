@@ -3,8 +3,8 @@ const initChatboard = () => {
   const botMessageElem = document.getElementById('bot-message');
   const userMessageElem = document.getElementById('user-message');
 
-  chatboard = {};
-  attendeeSection = {};
+  const chatboard = {};
+  const attendeeSection = {};
 
   chatboardElem.addEventListener('publish', (evt) => {
     const date = new Date();
@@ -48,6 +48,7 @@ const initChatboard = () => {
             evt.detail.message;
       // userMessageElem.appendChild(br);
       chatboardElem.appendChild(br);
+      chatboardElem.scrollTo(0, chatboardElem.scrollHeight + 10);
     } else {
       setTimeout(() => {
         const div = document.createElement('div');
@@ -85,6 +86,7 @@ const initChatboard = () => {
               }) +
               '·' +
               evt.detail.message;
+        chatboardElem.scrollTo(0, chatboardElem.scrollHeight + 10);
         // FIXME: need to be synchronized
       }, 1000);
     }
@@ -99,7 +101,6 @@ const initChatboard = () => {
         },
       })
     );
-    chatboardElem.scrollTo(0, chatboardElem.scrollHeight + 10);
   };
 
   return chatboard;

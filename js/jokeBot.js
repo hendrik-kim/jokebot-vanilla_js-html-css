@@ -100,14 +100,14 @@ class Joke {
 
 const initJokeBot = (chatboard) => {
   const jokeBotElem = document.createElement('jokeBot');
-  jokeBot = {};
+  const jokeBot = {};
   jokeBot.state = BOT_STATE.INIT;
   jokeBot.joke = new Joke();
 
   /* keyword -> message change
    Bot need to get whole message from user not keyword.
    prevent to lose user's message
-   decoupling from extractKeyword*/
+   decoupling from extractKeyword */
   jokeBot.stateTransit = (message) => {
     const keywords = extractKeyword(message);
     const hasJoke = keywords.includes('joke');
